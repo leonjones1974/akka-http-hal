@@ -35,7 +35,7 @@ case class ResourceBuilder(
     case Some(links) => JsObject(jsObject.fields + ("_links" -> links.map {
       case (key, value:Link) =>
         (key, value.copy(href = s"${if (!curied(key)) Href.make(withRequest)}${value.href}").toJson)
-      case (key, value:Seq[Curie]) => (key, value.toJson)
+      case (key, value) => (key, value.asInstanceOf[Seq[Curie]].toJson)
     }.toJson))
     case _ => jsObject
   }
